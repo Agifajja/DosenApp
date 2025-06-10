@@ -1,8 +1,6 @@
 package com.example.doosen.model
 
 
-import com.google.gson.annotations.SerializedName
-
 data class DetailMahasiswaResponse(
     val response: Boolean,
     val message: String,

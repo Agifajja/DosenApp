@@ -267,14 +267,7 @@ fun SetoranMahasiswaTab(
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp
                     )
-                    Icon(
-                        imageVector = Icons.Default.AccountCircle,
-                        contentDescription = "Icon Dosen",
-                        modifier = Modifier
-                            .size(64.dp)
-                            .align(Alignment.CenterHorizontally),
-                        tint = Color(0xFF00695C)
-                    )
+
 
                     Spacer(modifier = Modifier.height(8.dp))
 

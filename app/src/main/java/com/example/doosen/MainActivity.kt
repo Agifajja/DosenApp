@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.*
 import androidx.navigation.NavType
-import androidx.navigation.compose.*
 import androidx.navigation.navArgument
 
 import com.example.doosen.ui.*
@@ -40,7 +39,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// ✅ DI LUAR CLASS
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetoranDosenApp() {

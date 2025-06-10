@@ -16,10 +16,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
 
-enum class LoadingStatus {
-    LOADING, SUCCESS, ERROR
-}
+
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
@@ -68,6 +67,25 @@ class AuthViewModel @Inject constructor(
             }
         }
     }
+    suspend fun refreshToken(): Boolean {
+        return try {
+            val refreshToken = dataStoreManager.refreshToken.first() ?: return false
+
+            val response = ApiClient.apiService.refreshToken(
+                grantType = "refresh_token",
+                clientId = "setoran-mobile-dev",
+                clientSecret = "aqJp3xnXKudgC7RMOshEQP7ZoVKWzoSl",
+                refreshToken = refreshToken
+            )
+
+            dataStoreManager.saveToken(response.accessToken)
+            dataStoreManager.saveRefreshToken(response.refreshToken)
+            true
+        } catch (e: Exception) {
+            Log.e("AuthViewModel", "Refresh token gagal: ${e.message}")
+            false
+        }
+    }
 
     fun login(email: String, pass: String) {
         viewModelScope.launch {
@@ -104,7 +122,7 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun fetchUserInfo(token: String) {
+    fun fetchUserInfo(token: String, isRetry: Boolean = false) {
         viewModelScope.launch {
             updateStatus(LoadingStatus.LOADING)
             try {
@@ -121,6 +139,16 @@ class AuthViewModel @Inject constructor(
                     }
 
                     updateStatus(LoadingStatus.SUCCESS)
+                } else if (response.code() == 401 && !isRetry) {
+                    // Coba refresh token dan ulangi
+                    val refreshed = refreshToken()
+                    if (refreshed) {
+                        fetchUserInfo(token = token, isRetry = true)
+                    } else {
+                        _error.value = "Sesi habis. Silakan login kembali."
+                        logout {}
+                    }
+                    updateStatus(LoadingStatus.ERROR)
                 } else {
                     _error.value = "Gagal mengambil profil: ${response.message()}"
                     updateStatus(LoadingStatus.ERROR)
@@ -231,4 +259,7 @@ class AuthViewModel @Inject constructor(
     fun clearError() {
         _error.value = ""
     }
+}
+enum class LoadingStatus {
+    LOADING, SUCCESS, ERROR
 }

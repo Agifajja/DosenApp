@@ -44,4 +44,15 @@ interface ApiServiceRetrofit {
         @Path("nim") nim: String,
         @Body body: HapusSetoranRequest
     ): Response<SimpanSetoranResponse>
+
+
+    @FormUrlEncoded
+    @POST("oauth/token")
+    suspend fun refreshToken(
+        @Field("grant_type") grantType: String,
+        @Field("client_id") clientId: String,
+        @Field("client_secret") clientSecret: String,
+        @Field("refresh_token") refreshToken: String
+    ): TokenResponse
+
 }

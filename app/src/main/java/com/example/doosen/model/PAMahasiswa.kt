@@ -1,6 +1,6 @@
 package com.example.doosen.model
 
-import com.example.doosen.model.InfoSetoranMahasiswa
+
 import com.google.gson.annotations.SerializedName
 
 

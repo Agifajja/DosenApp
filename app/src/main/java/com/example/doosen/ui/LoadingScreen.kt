@@ -23,7 +23,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun LoadingScreen() {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading))
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.load))
     val progress by animateLottieCompositionAsState(
         composition,
         iterations = LottieConstants.IterateForever
@@ -34,7 +34,7 @@ fun LoadingScreen() {
         initialValue = 0.3f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
-            animation = tween(1000, easing = FastOutSlowInEasing),
+            animation = tween(18000, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
         )
     )
@@ -45,7 +45,7 @@ fun LoadingScreen() {
 
     LaunchedEffect(Unit) {
         while (true) {
-            delay(2000)
+            delay(18000)
             dzikirIndex = (dzikirIndex + 1) % dzikirList.size
         }
     }
@@ -56,7 +56,7 @@ fun LoadingScreen() {
     ) {
         // Background Image
         Image(
-            painter = painterResource(id = R.drawable.sabarimage),
+            painter = painterResource(id = R.drawable.bground),
             contentDescription = "Background Loading Screen",
             modifier = Modifier
                 .fillMaxSize()

@@ -23,7 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.*
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 import com.example.doosen.ui.*
 
 
@@ -98,5 +99,12 @@ fun getTopBarTitle(route: String?): String {
         Screen.Beranda.route -> Screen.Beranda.title
         Screen.Profil.route -> Screen.Profil.title
         else -> "Setoran Hafalan"
+    }
+}
+
+@HiltAndroidApp
+class MyApp : Application() {
+    override fun onCreate() {
+        super.onCreate()
     }
 }
